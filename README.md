@@ -106,7 +106,7 @@ RoBERTa-Large (24 layers, 1024 hidden dim)
 
 ## Dataset
 
-Trained on [Fake News Classification](https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification) from Kaggle (~6,300 articles).
+Trained on [Fake News Classification](https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification) from Kaggle (~250MB).
 
 - **Split:** 80% train, 20% validation
 - **Languages:** English
